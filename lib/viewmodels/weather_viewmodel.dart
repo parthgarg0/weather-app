@@ -30,6 +30,7 @@ class WeatherViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? _validationError;
   bool _isFahrenheit = false;
+  bool _isDarkMode = false;
 
   /// Request counter to cancel/ignore stale responses when a user triggers
   /// multiple searches in rapid succession.
@@ -49,6 +50,7 @@ class WeatherViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String? get validationError => _validationError;
   bool get isFahrenheit => _isFahrenheit;
+  bool get isDarkMode => _isDarkMode;
 
   /// Whether the app is in the initial empty state before any search is conducted.
   bool get isEmpty =>
@@ -66,6 +68,7 @@ class WeatherViewModel extends ChangeNotifier {
   /// on application startup, followed by a background refresh attempt.
   Future<void> initialize() async {
     _isFahrenheit = repository.getIsFahrenheit();
+    _isDarkMode = repository.getIsDarkMode();
     _searchHistory = repository.getSearchHistory();
 
     final cached = repository.getCachedWeather();
@@ -198,7 +201,7 @@ class WeatherViewModel extends ChangeNotifier {
   }
 
   // ---------------------------------------------------------------------------
-  // Unit Toggle (°C / °F)
+  // Unit Toggle (°C / °F) & Theme Toggle (Light / Dark)
   // ---------------------------------------------------------------------------
 
   /// Toggles between Celsius and Fahrenheit, persists the choice,
@@ -211,6 +214,13 @@ class WeatherViewModel extends ChangeNotifier {
     if (_lastSearchedCity != null) {
       await refreshWeather();
     }
+  }
+
+  /// Toggles between Light and Dark mode, persisting the preference.
+  Future<void> toggleThemeMode() async {
+    _isDarkMode = !_isDarkMode;
+    await repository.saveIsDarkMode(_isDarkMode);
+    notifyListeners();
   }
 
   // ---------------------------------------------------------------------------

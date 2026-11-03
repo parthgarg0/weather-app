@@ -67,24 +67,51 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Consumer<WeatherViewModel>(
             builder: (context, vm, _) {
-              return Padding(
-                padding: const EdgeInsets.only(right: 12.0),
-                child: ActionChip(
-                  avatar: Icon(
-                    Icons.thermostat_rounded,
-                    size: 18,
-                    color: theme.colorScheme.primary,
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Light / Dark Mode Toggle Chip
+                  ActionChip(
+                    avatar: Icon(
+                      vm.isDarkMode
+                          ? Icons.dark_mode_rounded
+                          : Icons.light_mode_rounded,
+                      size: 18,
+                      color: vm.isDarkMode
+                          ? Colors.amber.shade300
+                          : Colors.orange.shade600,
+                    ),
+                    label: Text(
+                      vm.isDarkMode ? 'Dark' : 'Light',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    tooltip: 'Toggle Light / Dark Mode',
+                    onPressed: () => vm.toggleThemeMode(),
+                    visualDensity: VisualDensity.compact,
                   ),
-                  label: Text(
-                    vm.isFahrenheit
-                        ? AppStrings.unitFahrenheit
-                        : AppStrings.unitCelsius,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(width: 8),
+
+                  // Celsius / Fahrenheit Toggle Chip
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: ActionChip(
+                      avatar: Icon(
+                        Icons.thermostat_rounded,
+                        size: 18,
+                        color: theme.colorScheme.primary,
+                      ),
+                      label: Text(
+                        vm.isFahrenheit
+                            ? AppStrings.unitFahrenheit
+                            : AppStrings.unitCelsius,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      tooltip: 'Toggle Celsius / Fahrenheit',
+                      onPressed: () => vm.toggleTemperatureUnit(),
+                      visualDensity: VisualDensity.compact,
+                    ),
                   ),
-                  tooltip: 'Toggle Celsius / Fahrenheit',
-                  onPressed: () => vm.toggleTemperatureUnit(),
-                  visualDensity: VisualDensity.compact,
-                ),
+                ],
               );
             },
           ),

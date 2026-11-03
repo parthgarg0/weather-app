@@ -37,46 +37,58 @@ class WeatherApp extends StatelessWidget {
     return ChangeNotifierProvider(
       // The ViewModel is created here and immediately initializes stored settings & cache
       create: (_) => WeatherViewModel(repository: repository)..initialize(),
-      child: MaterialApp(
-        title: AppStrings.appTitle,
-        debugShowCheckedModeBanner: false,
+      child: Consumer<WeatherViewModel>(
+        builder: (context, vm, _) {
+          return MaterialApp(
+            title: AppStrings.appTitle,
+            debugShowCheckedModeBanner: false,
 
-        // ThemeMode.system enables automatic switching between light and dark themes
-        themeMode: ThemeMode.system,
+            // Directly driven by the ViewModel's persisted theme state
+            themeMode: vm.isDarkMode ? ThemeMode.dark : ThemeMode.light,
 
-        // Material 3 Light Theme
-        theme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.light,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.indigo,
-            brightness: Brightness.light,
-          ),
-          cardTheme: const CardThemeData(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+            // Material 3 Light Theme
+            theme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.light,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.indigo,
+                brightness: Brightness.light,
+              ),
+              scaffoldBackgroundColor: const Color(0xFFF7F8FC),
+              cardTheme: CardThemeData(
+                elevation: 0,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  side: BorderSide(
+                    color: Colors.indigo.shade50,
+                    width: 1,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
 
-        // Material 3 Dark Theme
-        darkTheme: ThemeData(
-          useMaterial3: true,
-          brightness: Brightness.dark,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.indigo,
-            brightness: Brightness.dark,
-          ),
-          cardTheme: const CardThemeData(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
+            // Material 3 Dark Theme
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.indigo,
+                brightness: Brightness.dark,
+              ),
+              scaffoldBackgroundColor: const Color(0xFF111318),
+              cardTheme: CardThemeData(
+                elevation: 0,
+                color: const Color(0xFF1E2129),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
             ),
-          ),
-        ),
 
-        home: const HomeScreen(),
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }

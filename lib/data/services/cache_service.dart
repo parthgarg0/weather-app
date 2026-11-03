@@ -120,4 +120,18 @@ class CacheService {
   bool getIsFahrenheit() {
     return _prefs.getBool(AppConstants.keyIsFahrenheit) ?? false;
   }
+
+  // ---------------------------------------------------------------------------
+  // Theme Preference
+  // ---------------------------------------------------------------------------
+
+  /// Saves the user's theme mode preference (true for dark, false for light).
+  Future<bool> saveIsDarkMode(bool isDark) {
+    return _prefs.setBool(AppConstants.keyIsDarkMode, isDark);
+  }
+
+  /// Retrieves the saved theme preference; defaults to false (light mode).
+  bool getIsDarkMode() {
+    return _prefs.getBool(AppConstants.keyIsDarkMode) ?? false;
+  }
 }

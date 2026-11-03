@@ -16,6 +16,9 @@ class AppConstants {
   /// Key for storing boolean flag for Fahrenheit temperature unit preference.
   static const String keyIsFahrenheit = 'cached_temp_unit_is_fahrenheit';
 
+  /// Key for storing boolean flag for Dark Mode preference.
+  static const String keyIsDarkMode = 'cached_theme_is_dark';
+
   // Configuration values
   /// Maximum number of search history items to retain.
   static const int maxSearchHistoryItems = 5;

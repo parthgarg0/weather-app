@@ -10,6 +10,7 @@ void main() {
   testWidgets('WeatherApp smoke test renders app bar and search prompt', (WidgetTester tester) async {
     final mockRepo = MockWeatherRepository();
     when(() => mockRepo.getIsFahrenheit()).thenReturn(false);
+    when(() => mockRepo.getIsDarkMode()).thenReturn(false);
     when(() => mockRepo.getSearchHistory()).thenReturn([]);
     when(() => mockRepo.getCachedWeather()).thenReturn(null);
     when(() => mockRepo.getCachedTimestamp()).thenReturn(null);

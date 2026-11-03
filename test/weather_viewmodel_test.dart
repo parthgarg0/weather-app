@@ -68,6 +68,7 @@ void main() {
 
     // Default setup for basic repository queries
     when(() => mockRepository.getIsFahrenheit()).thenReturn(false);
+    when(() => mockRepository.getIsDarkMode()).thenReturn(false);
     when(() => mockRepository.getSearchHistory()).thenReturn([]);
     when(() => mockRepository.getCachedWeather()).thenReturn(null);
     when(() => mockRepository.getCachedTimestamp()).thenReturn(null);
@@ -262,6 +263,16 @@ void main() {
 
       expect(viewModel.searchHistory, isEmpty);
       verify(() => mockRepository.clearSearchHistory()).called(1);
+    });
+
+    test('toggleThemeMode inverts theme mode and saves preference', () async {
+      when(() => mockRepository.saveIsDarkMode(true)).thenAnswer((_) async => true);
+
+      expect(viewModel.isDarkMode, isFalse);
+      await viewModel.toggleThemeMode();
+
+      expect(viewModel.isDarkMode, isTrue);
+      verify(() => mockRepository.saveIsDarkMode(true)).called(1);
     });
   });
 }

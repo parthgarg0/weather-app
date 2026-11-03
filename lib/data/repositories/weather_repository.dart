@@ -82,4 +82,14 @@ class WeatherRepository {
   Future<bool> saveIsFahrenheit(bool isFahrenheit) {
     return cacheService.saveIsFahrenheit(isFahrenheit);
   }
+
+  /// Retrieves the persisted dark mode preference.
+  bool getIsDarkMode() {
+    return cacheService.getIsDarkMode();
+  }
+
+  /// Persists the dark mode preference.
+  Future<bool> saveIsDarkMode(bool isDark) {
+    return cacheService.saveIsDarkMode(isDark);
+  }
 }
