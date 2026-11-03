@@ -9,13 +9,14 @@ import 'widgets/empty_view.dart';
 import 'widgets/error_view.dart';
 import 'widgets/forecast_list.dart';
 import 'widgets/loading_view.dart';
+import 'widgets/offline_banner.dart';
 import 'widgets/search_bar.dart';
 
 /// The primary view of the Weather application.
 ///
 /// Reacts to state changes in [WeatherViewModel] and coordinates the presentation
 /// of the search bar, empty/loading/error states, duplicate city picker,
-/// current weather card, and 5-day forecast.
+/// offline warning banner, current weather card, and 5-day forecast.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -118,6 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       children: [
+        if (vm.isOffline)
+          OfflineBanner(
+            savedTimestamp: vm.cachedTimestamp,
+            onRetry: vm.refreshWeather,
+          ),
         CurrentWeatherCard(weatherData: weatherData),
         const SizedBox(height: 16),
         ForecastList(
