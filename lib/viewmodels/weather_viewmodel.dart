@@ -12,10 +12,9 @@ import '../data/repositories/weather_repository.dart';
 /// Manages asynchronous network states, stale request discarding, offline caching fallback,
 /// temperature unit toggling, and input validation.
 class WeatherViewModel extends ChangeNotifier {
-  final WeatherRepository _repository;
+  final WeatherRepository repository;
 
-  WeatherViewModel({required WeatherRepository repository})
-      : _repository = repository;
+  WeatherViewModel({required this.repository});
 
   // ---------------------------------------------------------------------------
   // Internal State
@@ -57,7 +56,7 @@ class WeatherViewModel extends ChangeNotifier {
 
   /// Timestamp when currently displayed data was cached.
   DateTime? get cachedTimestamp =>
-      _weatherData?.fetchedAt ?? _repository.getCachedTimestamp();
+      _weatherData?.fetchedAt ?? repository.getCachedTimestamp();
 
   // ---------------------------------------------------------------------------
   // Lifecycle Initialization
@@ -66,10 +65,10 @@ class WeatherViewModel extends ChangeNotifier {
   /// Initializes persisted settings, search history, and loads cached weather data
   /// on application startup, followed by a background refresh attempt.
   Future<void> initialize() async {
-    _isFahrenheit = _repository.getIsFahrenheit();
-    _searchHistory = _repository.getSearchHistory();
+    _isFahrenheit = repository.getIsFahrenheit();
+    _searchHistory = repository.getSearchHistory();
 
-    final cached = _repository.getCachedWeather();
+    final cached = repository.getCachedWeather();
     if (cached != null) {
       _weatherData = cached.copyWith(isFromCache: true);
       _lastSearchedCity = cached.city;
@@ -123,7 +122,7 @@ class WeatherViewModel extends ChangeNotifier {
     _setLoading(true);
 
     try {
-      final cities = await _repository.searchCities(trimmed);
+      final cities = await repository.searchCities(trimmed);
 
       // Discard response if a newer request was initiated while waiting
       if (currentRequestId != _activeRequestId) return;
@@ -156,7 +155,7 @@ class WeatherViewModel extends ChangeNotifier {
     _setLoading(true);
 
     try {
-      final liveWeather = await _repository.fetchWeather(
+      final liveWeather = await repository.fetchWeather(
         city: city,
         isFahrenheit: _isFahrenheit,
       );
@@ -166,7 +165,7 @@ class WeatherViewModel extends ChangeNotifier {
       _weatherData = liveWeather.copyWith(isFromCache: false);
       _isOffline = false;
       _errorMessage = null;
-      _searchHistory = _repository.getSearchHistory();
+      _searchHistory = repository.getSearchHistory();
     } on AppException catch (e) {
       if (currentRequestId != _activeRequestId) return;
       _handleWeatherFetchError(e);
@@ -206,7 +205,7 @@ class WeatherViewModel extends ChangeNotifier {
   /// and re-fetches the current city's weather in the selected unit.
   Future<void> toggleTemperatureUnit() async {
     _isFahrenheit = !_isFahrenheit;
-    await _repository.saveIsFahrenheit(_isFahrenheit);
+    await repository.saveIsFahrenheit(_isFahrenheit);
     notifyListeners();
 
     if (_lastSearchedCity != null) {
@@ -220,7 +219,7 @@ class WeatherViewModel extends ChangeNotifier {
 
   /// Clears recent search history chips.
   Future<void> clearHistory() async {
-    await _repository.clearSearchHistory();
+    await repository.clearSearchHistory();
     _searchHistory = [];
     notifyListeners();
   }
@@ -242,8 +241,8 @@ class WeatherViewModel extends ChangeNotifier {
 
     // Check if network error and cached data exists
     if ((error is NoInternetException || error is TimeoutException) &&
-        _repository.hasCachedData) {
-      final cached = _repository.getCachedWeather();
+        repository.hasCachedData) {
+      final cached = repository.getCachedWeather();
       if (cached != null) {
         _weatherData = cached.copyWith(isFromCache: true);
         _isOffline = true;
@@ -260,8 +259,8 @@ class WeatherViewModel extends ChangeNotifier {
   void _handleWeatherFetchError(AppException error) {
     // If network failed but we have a cache available, fallback to cached data with offline banner
     if ((error is NoInternetException || error is TimeoutException) &&
-        _repository.hasCachedData) {
-      final cached = _repository.getCachedWeather();
+        repository.hasCachedData) {
+      final cached = repository.getCachedWeather();
       if (cached != null) {
         _weatherData = cached.copyWith(isFromCache: true);
         _isOffline = true;

@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: vm.searchHistory.length + 1,
-                        separatorBuilder: (_, __) => const SizedBox(width: 8),
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
                         itemBuilder: (context, index) {
                           if (index == vm.searchHistory.length) {
                             return TextButton.icon(

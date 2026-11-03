@@ -1,30 +1,30 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:mocktail/mocktail.dart';
+import 'package:weather_app/core/constants/app_strings.dart';
+import 'package:weather_app/data/repositories/weather_repository.dart';
 import 'package:weather_app/main.dart';
 
+class MockWeatherRepository extends Mock implements WeatherRepository {}
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('WeatherApp smoke test renders app bar and search prompt', (WidgetTester tester) async {
+    final mockRepo = MockWeatherRepository();
+    when(() => mockRepo.getIsFahrenheit()).thenReturn(false);
+    when(() => mockRepo.getSearchHistory()).thenReturn([]);
+    when(() => mockRepo.getCachedWeather()).thenReturn(null);
+    when(() => mockRepo.getCachedTimestamp()).thenReturn(null);
+    when(() => mockRepo.hasCachedData).thenReturn(false);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(WeatherApp(repository: mockRepo));
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify AppBar title is present
+    expect(find.text(AppStrings.appTitle), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify search bar hint is present
+    expect(find.text(AppStrings.searchPrompt), findsOneWidget);
+
+    // Verify empty state is displayed initially
+    expect(find.text(AppStrings.emptyStateMessage), findsOneWidget);
   });
 }

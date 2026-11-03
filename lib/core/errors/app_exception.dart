@@ -15,22 +15,19 @@ abstract class AppException implements Exception {
 
 /// Thrown when the geocoding API returns no matching results for a city query.
 class CityNotFoundException extends AppException {
-  const CityNotFoundException([String message = AppStrings.errorCityNotFound])
-      : super(message);
+  const CityNotFoundException([super.message = AppStrings.errorCityNotFound]);
 }
 
 /// Thrown when there is no active internet connection or DNS lookup fails.
 class NoInternetException extends AppException {
-  const NoInternetException([String message = AppStrings.errorNoInternet])
-      : super(message);
+  const NoInternetException([super.message = AppStrings.errorNoInternet]);
 }
 
 /// Thrown when a network request exceeds the 10-second timeout threshold.
 ///
 /// Named [TimeoutException] as requested by project specification.
 class TimeoutException extends AppException {
-  const TimeoutException([String message = AppStrings.errorTimeout])
-      : super(message);
+  const TimeoutException([super.message = AppStrings.errorTimeout]);
 }
 
 /// Thrown when an HTTP request fails with a non-200 status code or malformed payload.

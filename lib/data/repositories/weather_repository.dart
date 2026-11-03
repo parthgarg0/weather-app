@@ -11,15 +11,14 @@ import '../services/weather_service.dart';
 class WeatherRepository {
   final GeocodingService _geocodingService;
   final WeatherService _weatherService;
-  final CacheService _cacheService;
+  final CacheService cacheService;
 
   WeatherRepository({
     GeocodingService? geocodingService,
     WeatherService? weatherService,
-    required CacheService cacheService,
+    required this.cacheService,
   })  : _geocodingService = geocodingService ?? GeocodingService(),
-        _weatherService = weatherService ?? WeatherService(),
-        _cacheService = cacheService;
+        _weatherService = weatherService ?? WeatherService();
 
   /// Searches for matching cities using the geocoding service.
   ///
@@ -43,44 +42,44 @@ class WeatherRepository {
     );
 
     // Save successful response locally for offline capability
-    await _cacheService.saveWeatherData(weatherData);
+    await cacheService.saveWeatherData(weatherData);
 
     // Add city to recent search history
-    await _cacheService.addSearchQuery(city.name);
+    await cacheService.addSearchQuery(city.name);
 
     return weatherData;
   }
 
   /// Retrieves the locally cached weather data, if present.
   WeatherData? getCachedWeather() {
-    return _cacheService.getCachedWeatherData();
+    return cacheService.getCachedWeatherData();
   }
 
   /// Retrieves the timestamp when weather was last saved.
   DateTime? getCachedTimestamp() {
-    return _cacheService.getCachedTimestamp();
+    return cacheService.getCachedTimestamp();
   }
 
   /// Whether offline weather cache exists.
-  bool get hasCachedData => _cacheService.hasCachedData;
+  bool get hasCachedData => cacheService.hasCachedData;
 
   /// Retrieves recent search history strings (up to 5 items).
   List<String> getSearchHistory() {
-    return _cacheService.getSearchHistory();
+    return cacheService.getSearchHistory();
   }
 
   /// Clears search history.
   Future<bool> clearSearchHistory() {
-    return _cacheService.clearSearchHistory();
+    return cacheService.clearSearchHistory();
   }
 
   /// Retrieves the persisted temperature unit preference.
   bool getIsFahrenheit() {
-    return _cacheService.getIsFahrenheit();
+    return cacheService.getIsFahrenheit();
   }
 
   /// Persists the temperature unit preference.
   Future<bool> saveIsFahrenheit(bool isFahrenheit) {
-    return _cacheService.saveIsFahrenheit(isFahrenheit);
+    return cacheService.saveIsFahrenheit(isFahrenheit);
   }
 }
