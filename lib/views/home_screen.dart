@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/constants/app_strings.dart';
 import '../../viewmodels/weather_viewmodel.dart';
+import 'widgets/city_picker_sheet.dart';
 import 'widgets/current_weather_card.dart';
 import 'widgets/empty_view.dart';
 import 'widgets/error_view.dart';
@@ -13,9 +14,41 @@ import 'widgets/search_bar.dart';
 /// The primary view of the Weather application.
 ///
 /// Reacts to state changes in [WeatherViewModel] and coordinates the presentation
-/// of the search bar, empty/loading/error states, current weather card, and 5-day forecast.
-class HomeScreen extends StatelessWidget {
+/// of the search bar, empty/loading/error states, duplicate city picker,
+/// current weather card, and 5-day forecast.
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isPickerOpen = false;
+
+  void _checkAndShowCityPicker(WeatherViewModel vm) {
+    if (vm.matchedCities.length > 1 && !_isPickerOpen) {
+      _isPickerOpen = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!mounted) return;
+        await showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          builder: (bottomSheetContext) => CityPickerSheet(
+            cities: vm.matchedCities,
+            onCitySelected: (selectedCity) {
+              Navigator.pop(bottomSheetContext);
+              vm.selectCity(selectedCity);
+            },
+          ),
+        );
+        _isPickerOpen = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +64,8 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Consumer<WeatherViewModel>(
           builder: (context, vm, child) {
+            _checkAndShowCityPicker(vm);
+
             return Column(
               children: [
                 // Top Search Bar Section
