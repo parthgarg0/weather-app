@@ -6,9 +6,15 @@ A clean, responsive, offline-first weather forecast application built for a **Mo
 
 ## 📸 Screenshots
 
-| Light Mode (Empty & Search) | Light Mode (Weather & 5-Day) | Dark Mode | Multi-City Picker Bottom Sheet | Offline Banner Fallback |
-| :---: | :---: | :---: | :---: | :---: |
-| *(Placeholder)* | *(Placeholder)* | *(Placeholder)* | *(Placeholder)* | *(Placeholder)* |
+### 1. Appearance & Theme Modes
+| Light Mode (Weather & 5-Day) | Dark Mode |
+| :---: | :---: |
+| <img src="screenshots/light_mode.png" alt="Light Mode (Weather & 5-Day)" width="100%"/> | <img src="screenshots/dark_mode.png" alt="Dark Mode" width="100%"/> |
+
+### 2. Multi-City Disambiguation & Offline Resilience
+| Multi-City Picker Bottom Sheet | Offline Banner Fallback |
+| :---: | :---: |
+| <img src="screenshots/multi_city_picker.png" alt="Multi-City Picker Bottom Sheet" width="100%"/> | <img src="screenshots/offline_banner.png" alt="Offline Banner Fallback" width="100%"/> |
 
 ---
 
@@ -106,10 +112,10 @@ A clean, responsive, offline-first weather forecast application built for a **Mo
 
 ### Bonus Features Implemented
 - 🌡️ **Celsius / Fahrenheit Toggle**: Persisted across app restarts, re-queries Open-Meteo with `&temperature_unit=fahrenheit` when active.
+- 🌓 **Interactive Light / Dark Mode Toggle**: AppBar chip button allowing instantaneous manual switching between Light and Dark themes, with preference persisted locally.
 - 🔄 **Pull-to-Refresh**: Seamless pull-to-refresh on the weather screen for instant updates of the active city.
-- 🌓 **Automatic Dark Mode**: System-based theme switching between Material 3 Light and Dark color schemes.
 - 🕒 **Persistent Search History**: Last 5 unique city searches saved locally and rendered as tappable filter chips directly beneath the search bar, with a one-tap clear option.
-- 🧪 **Comprehensive Unit & Widget Tests**: 36 tests covering WMO code mapping, model JSON parsing, missing `"results"` key handling, and ViewModel states (success, city not found, offline-with-cache, unit toggle).
+- 🧪 **Comprehensive Unit & Widget Tests**: 37 tests covering WMO code mapping, model JSON parsing, missing `"results"` key handling, and ViewModel states (success, city not found, offline-with-cache, unit toggle, theme toggle).
 
 ---
 
