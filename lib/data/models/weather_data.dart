@@ -23,12 +23,16 @@ class WeatherData {
   /// Timestamp when this data was fetched from the network.
   final DateTime? fetchedAt;
 
+  /// Indicates whether this data was served from the local cache rather than live API.
+  final bool isFromCache;
+
   const WeatherData({
     required this.city,
     required this.current,
     required this.daily,
     this.isFahrenheit = false,
     this.fetchedAt,
+    this.isFromCache = false,
   });
 
   /// Factory constructor to reconstruct [WeatherData] from JSON (used for offline cache).
@@ -43,6 +47,7 @@ class WeatherData {
       fetchedAt: json['fetchedAt'] != null
           ? DateTime.tryParse(json['fetchedAt'] as String)
           : null,
+      isFromCache: json['isFromCache'] as bool? ?? true,
     );
   }
 
@@ -54,6 +59,7 @@ class WeatherData {
       'daily': daily.map((f) => f.toJson()).toList(),
       'isFahrenheit': isFahrenheit,
       'fetchedAt': fetchedAt?.toIso8601String(),
+      'isFromCache': isFromCache,
     };
   }
 
@@ -64,6 +70,7 @@ class WeatherData {
     List<DailyForecast>? daily,
     bool? isFahrenheit,
     DateTime? fetchedAt,
+    bool? isFromCache,
   }) {
     return WeatherData(
       city: city ?? this.city,
@@ -71,6 +78,7 @@ class WeatherData {
       daily: daily ?? this.daily,
       isFahrenheit: isFahrenheit ?? this.isFahrenheit,
       fetchedAt: fetchedAt ?? this.fetchedAt,
+      isFromCache: isFromCache ?? this.isFromCache,
     );
   }
 
@@ -82,16 +90,18 @@ class WeatherData {
           city == other.city &&
           current == other.current &&
           isFahrenheit == other.isFahrenheit &&
-          fetchedAt == other.fetchedAt;
+          fetchedAt == other.fetchedAt &&
+          isFromCache == other.isFromCache;
 
   @override
   int get hashCode =>
       city.hashCode ^
       current.hashCode ^
       isFahrenheit.hashCode ^
-      fetchedAt.hashCode;
+      fetchedAt.hashCode ^
+      isFromCache.hashCode;
 
   @override
   String toString() =>
-      'WeatherData(city: ${city.name}, current: ${current.temperature}, days: ${daily.length})';
+      'WeatherData(city: ${city.name}, current: ${current.temperature}, days: ${daily.length}, isFromCache: $isFromCache)';
 }
