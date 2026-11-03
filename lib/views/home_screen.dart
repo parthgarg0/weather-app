@@ -15,8 +15,9 @@ import 'widgets/search_bar.dart';
 /// The primary view of the Weather application.
 ///
 /// Reacts to state changes in [WeatherViewModel] and coordinates the presentation
-/// of the search bar, empty/loading/error states, duplicate city picker,
-/// offline warning banner, current weather card, and 5-day forecast.
+/// of the search bar, search history chips, empty/loading/error states, duplicate
+/// city picker, offline warning banner, pull-to-refresh, current weather card,
+/// and 5-day forecast.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -53,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -61,6 +64,31 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: false,
         elevation: 0,
+        actions: [
+          Consumer<WeatherViewModel>(
+            builder: (context, vm, _) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: ActionChip(
+                  avatar: Icon(
+                    Icons.thermostat_rounded,
+                    size: 18,
+                    color: theme.colorScheme.primary,
+                  ),
+                  label: Text(
+                    vm.isFahrenheit
+                        ? AppStrings.unitFahrenheit
+                        : AppStrings.unitCelsius,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  tooltip: 'Toggle Celsius / Fahrenheit',
+                  onPressed: () => vm.toggleTemperatureUnit(),
+                  visualDensity: VisualDensity.compact,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Consumer<WeatherViewModel>(
@@ -68,19 +96,63 @@ class _HomeScreenState extends State<HomeScreen> {
             _checkAndShowCityPicker(vm);
 
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Top Search Bar Section
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 4.0),
                   child: CitySearchBar(
                     validationError: vm.validationError,
                     onClearValidation: vm.clearValidationError,
                     onSubmitted: (query) => vm.searchCity(query),
                   ),
                 ),
+
+                // Recent Search History Chips
+                if (vm.searchHistory.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 6.0),
+                    child: SizedBox(
+                      height: 38,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: vm.searchHistory.length + 1,
+                        separatorBuilder: (_, __) => const SizedBox(width: 8),
+                        itemBuilder: (context, index) {
+                          if (index == vm.searchHistory.length) {
+                            return TextButton.icon(
+                              onPressed: () => vm.clearHistory(),
+                              icon: const Icon(
+                                Icons.delete_outline_rounded,
+                                size: 16,
+                              ),
+                              label: const Text(
+                                AppStrings.clearHistory,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              style: TextButton.styleFrom(
+                                visualDensity: VisualDensity.compact,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                              ),
+                            );
+                          }
+                          final cityName = vm.searchHistory[index];
+                          return ActionChip(
+                            avatar: Icon(
+                              Icons.history_rounded,
+                              size: 16,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            label: Text(cityName),
+                            onPressed: () => vm.searchCity(cityName),
+                            visualDensity: VisualDensity.compact,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
 
                 // Main State-driven Content Area
                 Expanded(
@@ -115,23 +187,29 @@ class _HomeScreenState extends State<HomeScreen> {
       return const EmptyView();
     }
 
-    // Scrollable container ensuring no overflow in landscape or on small screens
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      children: [
-        if (vm.isOffline)
-          OfflineBanner(
-            savedTimestamp: vm.cachedTimestamp,
-            onRetry: vm.refreshWeather,
+    // Wrapped in RefreshIndicator for pull-to-refresh
+    return RefreshIndicator(
+      onRefresh: vm.refreshWeather,
+      child: ListView(
+        // AlwaysScrollableScrollPhysics ensures pull-to-refresh operates even when
+        // content does not exceed the screen height
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        children: [
+          if (vm.isOffline)
+            OfflineBanner(
+              savedTimestamp: vm.cachedTimestamp,
+              onRetry: vm.refreshWeather,
+            ),
+          CurrentWeatherCard(weatherData: weatherData),
+          const SizedBox(height: 16),
+          ForecastList(
+            forecasts: weatherData.daily,
+            isFahrenheit: weatherData.isFahrenheit,
           ),
-        CurrentWeatherCard(weatherData: weatherData),
-        const SizedBox(height: 16),
-        ForecastList(
-          forecasts: weatherData.daily,
-          isFahrenheit: weatherData.isFahrenheit,
-        ),
-        const SizedBox(height: 24),
-      ],
+          const SizedBox(height: 24),
+        ],
+      ),
     );
   }
 }
