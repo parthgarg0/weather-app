@@ -3,22 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../../core/constants/app_strings.dart';
 import '../../viewmodels/weather_viewmodel.dart';
+import 'widgets/current_weather_card.dart';
 import 'widgets/empty_view.dart';
 import 'widgets/error_view.dart';
+import 'widgets/forecast_list.dart';
 import 'widgets/loading_view.dart';
 import 'widgets/search_bar.dart';
 
 /// The primary view of the Weather application.
 ///
 /// Reacts to state changes in [WeatherViewModel] and coordinates the presentation
-/// of the search bar, empty/loading/error states, current weather, and forecasts.
+/// of the search bar, empty/loading/error states, current weather card, and 5-day forecast.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
 
                 // Main State-driven Content Area
                 Expanded(
-                  child: _buildBody(context, vm, theme),
+                  child: _buildBody(context, vm),
                 ),
               ],
             );
@@ -58,11 +58,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(
-    BuildContext context,
-    WeatherViewModel vm,
-    ThemeData theme,
-  ) {
+  Widget _buildBody(BuildContext context, WeatherViewModel vm) {
     if (vm.isLoading) {
       return const LoadingView();
     }
@@ -78,12 +74,23 @@ class HomeScreen extends StatelessWidget {
       return const EmptyView();
     }
 
-    // Placeholder for weather data display (populated in commit 10)
-    return Center(
-      child: Text(
-        'Weather loaded for ${vm.weatherData?.city.name}',
-        style: theme.textTheme.titleMedium,
-      ),
+    final weatherData = vm.weatherData;
+    if (weatherData == null) {
+      return const EmptyView();
+    }
+
+    // Scrollable container ensuring no overflow in landscape or on small screens
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      children: [
+        CurrentWeatherCard(weatherData: weatherData),
+        const SizedBox(height: 16),
+        ForecastList(
+          forecasts: weatherData.daily,
+          isFahrenheit: weatherData.isFahrenheit,
+        ),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }
