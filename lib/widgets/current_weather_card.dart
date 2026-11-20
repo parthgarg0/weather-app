@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/utils/weather_code_mapper.dart';
-import '../../data/models/weather_data.dart';
+import '../models/weather_data.dart';
+import '../utils/app_constants.dart';
+import '../utils/weather_code_mapper.dart';
 
 /// Card presenting the primary current weather metrics for the active city.
 ///

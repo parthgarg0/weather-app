@@ -4,12 +4,12 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-import '../../core/constants/api_constants.dart';
-import '../../core/errors/app_exception.dart';
 import '../models/city.dart';
 import '../models/current_weather.dart';
 import '../models/daily_forecast.dart';
 import '../models/weather_data.dart';
+import '../utils/app_constants.dart';
+import '../utils/app_exceptions.dart';
 
 /// Service responsible for fetching weather forecast data from the Open-Meteo Weather API.
 class WeatherService {

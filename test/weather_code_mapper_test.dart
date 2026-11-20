@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:weather_app/core/utils/weather_code_mapper.dart';
+import 'package:weather_app/utils/weather_code_mapper.dart';
 
 void main() {
   group('WeatherCodeMapper Tests', () {

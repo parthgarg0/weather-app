@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../data/models/daily_forecast.dart';
+import '../models/daily_forecast.dart';
+import '../utils/app_constants.dart';
 import 'forecast_tile.dart';
 
 /// Container widget that presents the multi-day weather forecast.

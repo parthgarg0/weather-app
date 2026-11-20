@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
-import '../core/constants/app_strings.dart';
-import '../core/errors/app_exception.dart';
-import '../data/models/city.dart';
-import '../data/models/weather_data.dart';
-import '../data/repositories/weather_repository.dart';
+import '../models/city.dart';
+import '../models/weather_data.dart';
+import '../repositories/weather_repository.dart';
+import '../utils/app_constants.dart';
+import '../utils/app_exceptions.dart';
 
 /// ViewModel managing state for the Weather application following the MVVM pattern.
 ///

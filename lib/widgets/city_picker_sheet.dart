@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../data/models/city.dart';
+import '../models/city.dart';
+import '../utils/app_constants.dart';
 
 /// Modal bottom sheet widget that lets the user choose between multiple city matches.
 ///

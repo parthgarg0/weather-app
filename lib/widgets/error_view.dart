@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../utils/app_constants.dart';
 
 /// Displayed when an unrecoverable network, API, or geocoding error occurs,
 /// offering the user a retry action.

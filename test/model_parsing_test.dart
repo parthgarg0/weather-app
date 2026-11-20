@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
-import 'package:weather_app/core/errors/app_exception.dart';
-import 'package:weather_app/data/models/city.dart';
-import 'package:weather_app/data/models/current_weather.dart';
-import 'package:weather_app/data/models/daily_forecast.dart';
-import 'package:weather_app/data/models/weather_data.dart';
-import 'package:weather_app/data/services/geocoding_service.dart';
+import 'package:weather_app/models/city.dart';
+import 'package:weather_app/models/current_weather.dart';
+import 'package:weather_app/models/daily_forecast.dart';
+import 'package:weather_app/models/weather_data.dart';
+import 'package:weather_app/services/geocoding_service.dart';
+import 'package:weather_app/utils/app_exceptions.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 

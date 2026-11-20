@@ -63,7 +63,7 @@ A clean, responsive, offline-first weather forecast application built for a **Mo
    ```bash
    flutter test
    ```
-   *(Expected output: `All 36 tests passed!`)*
+   *(Expected output: `All 37 tests passed!`)*
 
 5. **Launch the application**:
    ```bash
@@ -178,44 +178,58 @@ flowchart LR
 
 ## 📂 Project Directory Structure
 
-```
-lib/
-├── core/
-│   ├── constants/
-│   │   ├── api_constants.dart      # Base URLs, paths, query params, 10s timeout
-│   │   ├── app_constants.dart      # Cache keys, limits (5 history, 5 days)
-│   │   └── app_strings.dart        # All user-facing UI and error copy
-│   ├── errors/
-│   │   └── app_exception.dart      # CityNotFoundException, NoInternetException, TimeoutException, ApiException
-│   └── utils/
-│       └── weather_code_mapper.dart # Translates WMO codes to description & emoji
-├── data/
+```text
+weather_app/
+│
+├── lib/
+│   ├── main.dart                   # App entry point, DI, light/dark themes
+│   │
 │   ├── models/
 │   │   ├── city.dart               # Geographic location with name, country, admin1
 │   │   ├── current_weather.dart    # Current temperature, humidity, wind, code
 │   │   ├── daily_forecast.dart     # Daily min/max, condition, date
 │   │   └── weather_data.dart       # Consolidated model with fromJson/toJson
+│   │
+│   ├── services/
+│   │   ├── geocoding_service.dart  # Open-Meteo search API client (10s timeout)
+│   │   ├── weather_service.dart    # Open-Meteo forecast API client (10s timeout)
+│   │   └── cache_service.dart      # SharedPreferences cache & search history
+│   │
 │   ├── repositories/
 │   │   └── weather_repository.dart # Geocoding -> Forecast -> Cache orchestration
-│   └── services/
-│       ├── cache_service.dart      # SharedPreferences cache & search history
-│       ├── geocoding_service.dart  # Open-Meteo search API client (10s timeout)
-│       └── weather_service.dart    # Open-Meteo forecast API client (10s timeout)
-├── viewmodels/
-│   └── weather_viewmodel.dart      # ChangeNotifier handling state & race conditions
-├── views/
-│   ├── home_screen.dart            # Main reactive screen
-│   └── widgets/
-│       ├── city_picker_sheet.dart  # Modal bottom sheet for duplicate cities
-│       ├── current_weather_card.dart # Header card with current atmospheric metrics
-│       ├── empty_view.dart         # Welcoming initial search prompt
-│       ├── error_view.dart         # Error presentation with Retry action
-│       ├── forecast_list.dart      # 5-day forecast card container
-│       ├── forecast_tile.dart      # Single day forecast row entry
-│       ├── loading_view.dart       # Asynchronous progress indicator
-│       ├── offline_banner.dart     # Warning pill with cache timestamp
-│       └── search_bar.dart         # Input field with clear & validation
-└── main.dart                       # App entry point, DI, light/dark themes
+│   │
+│   ├── viewmodels/
+│   │   └── weather_viewmodel.dart  # ChangeNotifier handling state & race conditions
+│   │
+│   ├── screens/
+│   │   └── home_screen.dart        # Main reactive screen
+│   │
+│   ├── widgets/
+│   │   ├── search_bar.dart         # Input field with clear & validation
+│   │   ├── current_weather_card.dart # Header card with current atmospheric metrics
+│   │   ├── forecast_list.dart      # 5-day forecast card container
+│   │   ├── forecast_tile.dart      # Single day forecast row entry
+│   │   ├── city_picker_sheet.dart  # Modal bottom sheet for duplicate cities
+│   │   ├── error_view.dart         # Error presentation with Retry action
+│   │   ├── empty_view.dart         # Welcoming initial search prompt
+│   │   ├── loading_view.dart       # Asynchronous progress indicator
+│   │   └── offline_banner.dart     # Warning pill with cache timestamp
+│   │
+│   └── utils/
+│       ├── app_constants.dart      # Consolidated API endpoints, params, strings & limits
+│       ├── app_exceptions.dart     # Custom exceptions (CityNotFound, NoInternet, Timeout, Api)
+│       └── weather_code_mapper.dart # Translates WMO codes to description & emoji
+│
+├── test/
+│   ├── model_parsing_test.dart     # JSON serialization & deserialization tests
+│   ├── weather_code_mapper_test.dart # WMO code to description & emoji mapping tests
+│   ├── weather_viewmodel_test.dart # MVVM state flow, caching & error handling unit tests
+│   └── widget_test.dart            # Smoke & widget tests for HomeScreen & states
+│
+├── screenshots/                    # App preview screenshots for Light, Dark, Picker & Offline
+├── pubspec.yaml
+├── analysis_options.yaml
+└── README.md
 ```
 
 ---

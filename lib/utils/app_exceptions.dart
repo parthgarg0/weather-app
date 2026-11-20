@@ -1,9 +1,9 @@
-import '../constants/app_strings.dart';
+import 'app_constants.dart';
 
 /// Base class for all application-specific exceptions.
 ///
 /// Every custom exception provides a user-friendly [message] suitable
-/// for display directly in the UI error state.
+/// for direct presentation in the UI error state.
 abstract class AppException implements Exception {
   final String message;
 
@@ -24,8 +24,6 @@ class NoInternetException extends AppException {
 }
 
 /// Thrown when a network request exceeds the 10-second timeout threshold.
-///
-/// Named [TimeoutException] as requested by project specification.
 class TimeoutException extends AppException {
   const TimeoutException([super.message = AppStrings.errorTimeout]);
 }

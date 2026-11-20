@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:weather_app/core/constants/app_strings.dart';
-import 'package:weather_app/core/errors/app_exception.dart';
-import 'package:weather_app/data/models/city.dart';
-import 'package:weather_app/data/models/current_weather.dart';
-import 'package:weather_app/data/models/daily_forecast.dart';
-import 'package:weather_app/data/models/weather_data.dart';
-import 'package:weather_app/data/repositories/weather_repository.dart';
+import 'package:weather_app/models/city.dart';
+import 'package:weather_app/models/current_weather.dart';
+import 'package:weather_app/models/daily_forecast.dart';
+import 'package:weather_app/models/weather_data.dart';
+import 'package:weather_app/repositories/weather_repository.dart';
+import 'package:weather_app/utils/app_constants.dart';
+import 'package:weather_app/utils/app_exceptions.dart';
 import 'package:weather_app/viewmodels/weather_viewmodel.dart';
 
 class MockWeatherRepository extends Mock implements WeatherRepository {}

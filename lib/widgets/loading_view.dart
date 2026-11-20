@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../utils/app_constants.dart';
 
 /// Displayed while an asynchronous weather or geocoding operation is in progress.
 class LoadingView extends StatelessWidget {

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../viewmodels/weather_viewmodel.dart';
-import 'widgets/city_picker_sheet.dart';
-import 'widgets/current_weather_card.dart';
-import 'widgets/empty_view.dart';
-import 'widgets/error_view.dart';
-import 'widgets/forecast_list.dart';
-import 'widgets/loading_view.dart';
-import 'widgets/offline_banner.dart';
-import 'widgets/search_bar.dart';
+import '../utils/app_constants.dart';
+import '../viewmodels/weather_viewmodel.dart';
+import '../widgets/city_picker_sheet.dart';
+import '../widgets/current_weather_card.dart';
+import '../widgets/empty_view.dart';
+import '../widgets/error_view.dart';
+import '../widgets/forecast_list.dart';
+import '../widgets/loading_view.dart';
+import '../widgets/offline_banner.dart';
+import '../widgets/search_bar.dart';
 
 /// The primary view of the Weather application.
 ///

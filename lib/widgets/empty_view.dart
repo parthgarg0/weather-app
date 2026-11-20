@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../utils/app_constants.dart';
 
 /// Displayed when the app is first opened before the user conducts any search.
 class EmptyView extends StatelessWidget {

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/constants/app_constants.dart';
 import '../models/weather_data.dart';
+import '../utils/app_constants.dart';
 
 /// Local storage service managing offline cache, recent search history,
 /// and user preferences via [SharedPreferences].

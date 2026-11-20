@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/constants/app_strings.dart';
-import 'data/repositories/weather_repository.dart';
-import 'data/services/cache_service.dart';
+import 'repositories/weather_repository.dart';
+import 'screens/home_screen.dart';
+import 'services/cache_service.dart';
+import 'utils/app_constants.dart';
 import 'viewmodels/weather_viewmodel.dart';
-import 'views/home_screen.dart';
 
 void main() async {
   // Ensure Flutter engine bindings are initialized before accessing SharedPreferences

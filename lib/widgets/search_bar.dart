@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../utils/app_constants.dart';
 
 /// Reusable search input field customized for city queries.
 ///

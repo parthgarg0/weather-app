@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:weather_app/core/constants/app_strings.dart';
-import 'package:weather_app/data/repositories/weather_repository.dart';
+import 'package:weather_app/repositories/weather_repository.dart';
+import 'package:weather_app/utils/app_constants.dart';
 import 'package:weather_app/main.dart';
 
 class MockWeatherRepository extends Mock implements WeatherRepository {}

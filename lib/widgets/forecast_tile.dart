@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/utils/weather_code_mapper.dart';
-import '../../data/models/daily_forecast.dart';
+import '../models/daily_forecast.dart';
+import '../utils/app_constants.dart';
+import '../utils/weather_code_mapper.dart';
 
 /// Renders a single row entry within the 5-day forecast list.
 class ForecastTile extends StatelessWidget {

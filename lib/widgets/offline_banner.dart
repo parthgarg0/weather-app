@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../core/constants/app_strings.dart';
+import '../utils/app_constants.dart';
 
 /// Banner shown when displaying cached weather data due to network unavailability.
 ///
